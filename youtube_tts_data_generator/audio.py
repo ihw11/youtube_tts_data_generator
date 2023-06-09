@@ -5,14 +5,8 @@ from warnings import warn
 import numpy as np
 import librosa
 import struct
+import webrtcvad
 
-try:
-    import webrtcvad
-except:
-    warn(
-        "Unable to import 'webrtcvad'. This package enables noise removal and is recommended."
-    )
-    webrtcvad = None
 
 int16_max = (2 ** 15) - 1
 sampling_rate = 16000
@@ -48,8 +42,7 @@ def preprocess_wav(
 
     # Apply the preprocessing: normalize volume and shorten long silences
     wav = normalize_volume(wav, audio_norm_target_dBFS, increase_only=True)
-    if webrtcvad:
-        wav = trim_long_silences(wav)
+    wav = trim_long_silences(wav)
 
     return wav
 
